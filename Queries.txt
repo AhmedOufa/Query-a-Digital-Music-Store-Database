@@ -1,0 +1,47 @@
+/* Query 1 */
+SELECT a.name as artist_name, t.Bytes as song_size
+from Artist a
+JOIN Album alb on a.ArtistId = alb.ArtistId
+join track t on alb.AlbumId = t.AlbumId
+where t.Bytes >= (SELECT avg(track.bytes)
+from Track)
+GROUP by a.Name
+order by 2 DESC;
+
+/* Query 2 */
+
+SELECT al.Title as album_name, mt.Name as mediatype_name ,count(*) as num_of_album_sold
+FROM MediaType mt
+JOIN Track t on mt.MediaTypeId = t.MediaTypeId
+JOIN Album al on al.AlbumId = t.AlbumId
+GROUP by 2
+ORDER by 3 desc;
+
+
+
+/* Query 3 */
+SELECT a.ArtistId as artistid, a.Name as artistname, Count(*) as num_of_songs
+from Genre g
+JOIN Track t on g.GenreId = t.GenreId
+JOIN Album al on al.AlbumId = t.AlbumId
+JOIN Artist a on a.ArtistId = al.ArtistId
+where g.Name =  "Latin"
+GROUP by 2
+ORDER by 3 DESC
+limit 5
+
+
+
+/* Query 4 */
+
+SELECT  G.Name,COUNT(IL.InvoiceLineId) AS Quantity_Sold
+FROM Track T
+JOIN InvoiceLine IL
+ON T.TrackId = IL.TrackId
+JOIN Genre G
+ON G.GenreId = T.GenreId
+GROUP BY 1
+ORDER BY 2 DESC
+limit 10;
+
+
